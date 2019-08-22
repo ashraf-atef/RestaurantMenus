@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp">
+
+    <ImageView
+            android:id="@+id/iv_tag"
+            android:layout_width="@dimen/_100sdp"
+            tools:src="@drawable/ic_launcher_background"
+            android:scaleType="centerCrop"
+            android:layout_height="@dimen/_100sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:id="@+id/tv_tag_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/iv_tag"
+            app:layout_constraintEnd_toEndOf="@id/iv_tag"
+            app:layout_constraintStart_toStartOf="@id/iv_tag"
+            tools:text="Grilled"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
