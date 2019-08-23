@@ -1,5 +1,6 @@
 package com.example.restaurant.menus
 
+import androidx.annotation.VisibleForTesting
 import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
 import com.example.restaurant.common.presentationLayer.rx.addTo
 import com.example.restaurant.common.presentationLayer.rx.disposeIfNot
@@ -19,8 +20,9 @@ class MenusViewModel @Inject constructor(
     private val itemsGeneralRepo: ItemsGeneralRepo
 ) : BaseViewModel<MenusState>() {
 
+    @VisibleForTesting
     var lastSelectedTag: Tag? = null
-    var itemsDisposable: Disposable? = null
+    private var itemsDisposable: Disposable? = null
 
     fun loadFromScratch() {
         if (!isInitBefore) {

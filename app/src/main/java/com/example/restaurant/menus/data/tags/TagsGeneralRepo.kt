@@ -1,14 +1,18 @@
 package com.example.restaurant.menus.data.tags
 
+import androidx.annotation.VisibleForTesting
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.local.TagLocalRepo
 import com.example.restaurant.menus.data.tags.remote.TagsRemoteRepo
 import io.reactivex.Maybe
 import javax.inject.Inject
 
-class TagsGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemoteRepo,
-                                          private val dataLocalRepo: TagLocalRepo) {
+class TagsGeneralRepo @Inject constructor(
+    private val tagsRemoteRepo: TagsRemoteRepo,
+    private val tagsLocalRepo: TagLocalRepo
+) {
 
+    @VisibleForTesting
     var page: Int = 1
 
     fun rest() {
@@ -16,14 +20,16 @@ class TagsGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemote
     }
 
     fun getTags(): Maybe<List<Tag>> =
-        dataLocalRepo.getTags(page)
+        tagsLocalRepo.getTags(page)
             .flatMap {
                 if (it.isEmpty())
-                    dataRemoteRepo.getTags(page)
+                    tagsRemoteRepo.getTags(page)
                         .doOnSuccess { remoteDataList ->
-                            if (remoteDataList.isEmpty() && page == 1)
-                                throw NoDataAvailableThrowable()
-                            dataLocalRepo.insert(remoteDataList).subscribe()
+                            if (remoteDataList.isEmpty()) {
+                                if (page == 1)
+                                    throw NoDataAvailableThrowable()
+                            } else
+                                tagsLocalRepo.insert(remoteDataList).subscribe()
                         }
                         .toMaybe()
                 else
