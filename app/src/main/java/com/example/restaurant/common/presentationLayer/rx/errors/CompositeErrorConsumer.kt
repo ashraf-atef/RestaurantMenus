@@ -1,4 +1,4 @@
-package com.example.restaurant.common.presentationLayer.errors
+package com.example.restaurant.common.presentationLayer.rx.errors
 
 import io.reactivex.exceptions.CompositeException
 import io.reactivex.functions.Consumer

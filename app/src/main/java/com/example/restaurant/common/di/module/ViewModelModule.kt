@@ -3,8 +3,8 @@ package com.example.restaurant.common.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.restaurant.menus.MenusViewModel
-import com.example.restaurant.common.presentationLayer.ViewModelFactory
-import com.example.restaurant.common.presentationLayer.ViewModelKey
+import com.example.restaurant.common.presentationLayer.view_model.ViewModelFactory
+import com.example.restaurant.common.presentationLayer.view_model.ViewModelKey
 import com.example.restaurant.item.ItemDetailsViewModel
 import dagger.Binds
 import dagger.Module

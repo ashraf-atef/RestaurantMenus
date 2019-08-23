@@ -1,4 +1,4 @@
-package com.example.restaurant.common.presentationLayer.schedulers
+package com.example.restaurant.common.presentationLayer.rx.schedulers
 
 import io.reactivex.Scheduler
 

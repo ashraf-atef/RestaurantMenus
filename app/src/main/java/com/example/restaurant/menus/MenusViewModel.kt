@@ -1,16 +1,15 @@
 package com.example.restaurant.menus
 
 import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
-import com.example.restaurant.common.presentationLayer.BaseViewModel
-import com.example.restaurant.common.presentationLayer.addTo
-import com.example.restaurant.common.presentationLayer.errors.CompositeErrorConsumer
+import com.example.restaurant.common.presentationLayer.rx.addTo
+import com.example.restaurant.common.presentationLayer.view_model.BaseViewModel
+import com.example.restaurant.common.presentationLayer.rx.errors.CompositeErrorConsumer
+import com.example.restaurant.common.presentationLayer.rx.getIoMainTransformer
 import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MenusViewModel @Inject constructor(
@@ -51,8 +50,7 @@ class MenusViewModel @Inject constructor(
     private fun loadTags() {
         tagsGeneralRepo.getData()
             //TODO: Make IO Transformer and use it
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(getIoMainTransformer())
             .subscribe(Consumer {
                 val newDataList = getCurrentState().tags.toMutableList()
                 newDataList.addAll(it)
@@ -95,8 +93,7 @@ class MenusViewModel @Inject constructor(
         )
 
         itemsGeneralRepo.getItems(tag.tagName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(getIoMainTransformer())
             .subscribe(Consumer {
                 postState(
                     getCurrentState().copy(itemsLoading = false, items = it)

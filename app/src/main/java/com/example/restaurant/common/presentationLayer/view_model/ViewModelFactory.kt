@@ -1,4 +1,4 @@
-package com.example.restaurant.common.presentationLayer
+package com.example.restaurant.common.presentationLayer.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

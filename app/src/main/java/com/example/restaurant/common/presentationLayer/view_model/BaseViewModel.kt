@@ -1,10 +1,9 @@
-package com.example.restaurant.common.presentationLayer
+package com.example.restaurant.common.presentationLayer.view_model
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 
 abstract class BaseViewModel<T> : ViewModel() {
 
@@ -25,8 +24,4 @@ abstract class BaseViewModel<T> : ViewModel() {
         super.onCleared()
         compositeDisposable.dispose()
     }
-}
-
-fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
-    compositeDisposable.add(this)
 }

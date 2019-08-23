@@ -1,10 +1,9 @@
 package com.example.restaurant.item
 
-import com.example.restaurant.common.presentationLayer.BaseViewModel
-import com.example.restaurant.common.presentationLayer.addTo
+import com.example.restaurant.common.presentationLayer.rx.addTo
+import com.example.restaurant.common.presentationLayer.rx.getIoMainTransformer
+import com.example.restaurant.common.presentationLayer.view_model.BaseViewModel
 import com.example.restaurant.item.data.GettingItemLocalRepo
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ItemDetailsViewModel @Inject constructor(private val itemLocalRepo: GettingItemLocalRepo) :
@@ -19,8 +18,7 @@ class ItemDetailsViewModel @Inject constructor(private val itemLocalRepo: Gettin
 
     private fun getItem(id: Int) {
         itemLocalRepo.getItem(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(getIoMainTransformer())
             .subscribe(
                 { postState(getCurrentState().copy(item = it)) },
                 { it.printStackTrace() })
