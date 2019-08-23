@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurant.R
 import com.example.restaurant.common.presentationLayer.BaseActivity
 import com.example.restaurant.common.presentationLayer.EndlessRecyclerViewOnScrollListener
@@ -42,12 +41,12 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
 
     private fun render(menusState: MenusState) {
         with(menusState) {
-            if (error == null)
+            if (tagsError == null)
                 tagsAdapter.addData(tags)
             else {
                 Toast.makeText(
                     baseContext,
-                    when (error) {
+                    when (tagsError) {
                         Errors.NO_DATA_AVAILABLE -> getString(R.string.msg_no_available_data)
                         Errors.NO_MORE_OFFLINE_DATA -> getString(R.string.msg_no_more_offline_data)
                         else -> getString(R.string.msg_unknown_error)

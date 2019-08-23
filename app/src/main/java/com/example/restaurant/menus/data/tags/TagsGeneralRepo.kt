@@ -15,7 +15,7 @@ class TagsGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemote
         page = 1
     }
 
-    fun getData(): Maybe<List<Tag>> =
+    fun getTags(): Maybe<List<Tag>> =
         dataLocalRepo.getTags(page)
             .flatMap {
                 if (it.isEmpty())

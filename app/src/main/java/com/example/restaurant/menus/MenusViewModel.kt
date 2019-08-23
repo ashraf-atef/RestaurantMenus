@@ -44,14 +44,14 @@ class MenusViewModel @Inject constructor(
         postState(
             getCurrentState().copy(
                 tagsLoading = TagsLoading.LOAD_MORE,
-                error = null
+                tagsError = null
             )
         )
         loadTags()
     }
 
     private fun loadTags() {
-        tagsGeneralRepo.getData()
+        tagsGeneralRepo.getTags()
             .compose(getIoMainTransformer())
             .subscribe(Consumer {
                 val newDataList = getCurrentState().tags.toMutableList()
@@ -60,7 +60,7 @@ class MenusViewModel @Inject constructor(
                     getCurrentState().copy(
                         tags = newDataList,
                         tagsLoading = null,
-                        error = null,
+                        tagsError = null,
                         itemsInitialState = (lastSelectedTag == null)
                     )
                 )
@@ -69,7 +69,7 @@ class MenusViewModel @Inject constructor(
                     postState(
                         getCurrentState().copy(
                             tagsLoading = null,
-                            error = when (t) {
+                            tagsError = when (t) {
                                 is ConnectionThrowable -> Errors.NO_MORE_OFFLINE_DATA
                                 is NoDataAvailableThrowable -> Errors.NO_DATA_AVAILABLE
                                 else -> Errors.UNKNOWN

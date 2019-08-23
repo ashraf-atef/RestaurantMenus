@@ -6,7 +6,7 @@ import com.example.restaurant.menus.data.tags.Tag
 data class MenusState(
     val tags: List<Tag> = listOf(),
     val tagsLoading: TagsLoading? = null,
-    val error: Errors? = null,
+    val tagsError: Errors? = null,
 
     val items: List<Item> = listOf(),
     val itemsInitialState: Boolean = false,

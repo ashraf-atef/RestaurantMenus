@@ -23,7 +23,8 @@ abstract class EndlessRecyclerViewOnScrollListener : RecyclerView.OnScrollListen
             val firstVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 
             if (isLoading) {
-                if (totalItemCount > previousTotal + 1) { // the + 1 is for the error / progress layouts
+                // the + 1 is for the error / progress layouts
+                if (totalItemCount > previousTotal + 1) {
                     isLoading = false
                     previousTotal = totalItemCount
                 }
@@ -31,16 +32,12 @@ abstract class EndlessRecyclerViewOnScrollListener : RecyclerView.OnScrollListen
             val visibleThreshold = 5
             if (!isLoading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
                 // End has been reached
-
                 recyclerView.post(loadMoreRunnable)
-
                 isLoading = true
             }
         }
     }
 
-
-    // Defines the process for actually loading more data based on page
     abstract fun onLoadMore()
 
     fun restState() {
