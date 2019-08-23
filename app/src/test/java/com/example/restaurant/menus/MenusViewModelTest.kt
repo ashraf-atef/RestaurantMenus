@@ -2,21 +2,24 @@ package com.example.restaurant.menus
 
 import androidx.lifecycle.Observer
 import com.example.restaurant.BaseTest
+import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
+import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
-import com.example.restaurant.menus.data.tags.errors.NoMoreOfflineDataThrowable
 import io.reactivex.Maybe
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.*
 
 
-class DataViewModelTest : BaseTest() {
+class MenusViewModelTest : BaseTest() {
 
     lateinit var menusViewModel: MenusViewModel
     @Mock
-    lateinit var dataGeneralRepo: TagsGeneralRepo
+    lateinit var tagsGeneralRepo: TagsGeneralRepo
+    @Mock
+    lateinit var itemsGeneralRepo: ItemsGeneralRepo
     @Mock
     lateinit var observer: Observer<MenusState>
     private val tagList: List<Tag> by lazy {
@@ -25,8 +28,8 @@ class DataViewModelTest : BaseTest() {
 
     override fun setup() {
         super.setup()
-        `when`(dataGeneralRepo.getData()).then { Maybe.just(tagList) }
-        menusViewModel = MenusViewModel(dataGeneralRepo)
+        `when`(tagsGeneralRepo.getData()).then { Maybe.just(tagList) }
+        menusViewModel = MenusViewModel(tagsGeneralRepo, itemsGeneralRepo)
         menusViewModel.liveData.observeForever(observer)
     }
 
@@ -76,7 +79,7 @@ class DataViewModelTest : BaseTest() {
 
     @Test
     fun `load more WHEN load data return a no more data offline EXPECT pushing initial state then data state`() {
-       `when`(dataGeneralRepo.getData()).then { Maybe.error<Any>(NoMoreOfflineDataThrowable()) }
+       `when`(tagsGeneralRepo.getData()).then { Maybe.error<Any>(ConnectionThrowable()) }
 
         menusViewModel.loadMoreTags()
         verify(observer).onChanged( menusViewModel.getCurrentState().copy(
@@ -93,7 +96,7 @@ class DataViewModelTest : BaseTest() {
 
     @Test
     fun `load more WHEN load data return a no data available EXPECT pushing initial state then data state`() {
-        `when`(dataGeneralRepo.getData()).then { Maybe.error<Any>(NoDataAvailableThrowable()) }
+        `when`(tagsGeneralRepo.getData()).then { Maybe.error<Any>(NoDataAvailableThrowable()) }
         menusViewModel.loadMoreTags()
         verify(observer).onChanged( menusViewModel.getCurrentState().copy(
             tagsLoading = TagsLoading.LOAD_MORE,
