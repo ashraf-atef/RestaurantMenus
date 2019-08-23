@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.example.restaurant.menus.data.items.Item
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Single
 
 @Dao
 interface ItemsDao {
@@ -16,4 +17,7 @@ interface ItemsDao {
 
     @Query("Select * from item where tagName = :tagName")
     fun getItems(tagName: String): Maybe<List<Item>>
+
+    @Query("Select * from item where id_ = :id")
+    fun getItem(id: Int): Single<Item>
 }

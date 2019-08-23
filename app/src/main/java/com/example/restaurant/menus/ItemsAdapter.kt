@@ -3,6 +3,7 @@ package com.example.restaurant.menus
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurant.R
@@ -43,12 +44,13 @@ class ItemsAdapter @Inject constructor(val itemClickListener: ItemClickListener)
                 with(itemView) {
                 Picasso.get().load(photoUrl).placeholder(R.drawable.ic_placeholder).into(iv_item_photo)
                     tv_item_name.text = name
+                    setOnClickListener { itemClickListener.onItemMenuClick(list[adapterPosition], iv_item_photo)}
                 }
             }
         }
     }
 
     interface ItemClickListener {
-        fun onItemMenuClick()
+        fun onItemMenuClick(item: Item, ivItemPhoto: ImageView)
     }
 }

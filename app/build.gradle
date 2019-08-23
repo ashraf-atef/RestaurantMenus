@@ -86,8 +86,6 @@ dependencies {
 
     //Other helpful libraries
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.intuit.sdp:sdp-android:1.0.4'
-    implementation 'com.intuit.ssp:ssp-android:1.0.5'
 
     //UI related libraries
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
@@ -96,6 +94,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha09'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.intuit.sdp:sdp-android:1.0.4'
+    implementation 'com.intuit.ssp:ssp-android:1.0.5'
 
     //Test
     implementation 'org.mockito:mockito-core:2.28.2'

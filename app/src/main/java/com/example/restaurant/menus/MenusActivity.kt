@@ -3,6 +3,7 @@ package com.example.restaurant.menus
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -130,7 +131,7 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
         menusViewModel.getItems(tag)
     }
 
-    override fun onItemMenuClick(item: Item) {
-        ItemDetailsActivity.start(this, item.id_)
+    override fun onItemMenuClick(item: Item, ivItemPhoto: ImageView) {
+        ItemDetailsActivity.start(this, item.id_, ivItemPhoto)
     }
 }

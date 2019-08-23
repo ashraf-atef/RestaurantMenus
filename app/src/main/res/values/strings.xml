@@ -7,4 +7,6 @@
     <string name="msg_unknown_error">Unknown error</string>
     <string name="msg_no_items_available">No items Available</string>
     <string name="msg_initial_items">Choose tag to see items</string>
+
+    <string name="MenuItemImageViewSharedTransitionKey" translatable="false">Menu_Item_Image</string>
 </resources>

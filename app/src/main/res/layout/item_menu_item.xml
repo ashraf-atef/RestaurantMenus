@@ -9,6 +9,7 @@
 
     <ImageView
             android:id="@+id/iv_item_photo"
+            android:transitionName="@string/MenuItemImageViewSharedTransitionKey"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:scaleType="centerCrop"

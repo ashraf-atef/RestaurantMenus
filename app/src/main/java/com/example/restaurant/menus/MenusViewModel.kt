@@ -88,6 +88,7 @@ class MenusViewModel @Inject constructor(
             ).addTo(compositeDisposable)
     }
 
+    //TODO: dispose the previous request if found before starting new one
     fun getItems(tag: Tag) {
         lastSelectedTag = tag
 
@@ -135,9 +136,8 @@ class MenusViewModel @Inject constructor(
         }
     }
 
-    override fun getInitialState(): MenusState {
-        return MenusState(
+     override fun getInitialState(): MenusState = MenusState(
             tagsLoading = TagsLoading.LOAD_FROM_SCRATCH
         )
-    }
+
 }
