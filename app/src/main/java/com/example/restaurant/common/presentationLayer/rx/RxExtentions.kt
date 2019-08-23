@@ -8,6 +8,11 @@ fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
     compositeDisposable.add(this)
 }
 
+fun Disposable.disposeIfNot() {
+    if (!isDisposed)
+        dispose()
+}
+
 @JvmField
 val ioMainTransformer = IoMainSchedulerTransformer<Any>()
 

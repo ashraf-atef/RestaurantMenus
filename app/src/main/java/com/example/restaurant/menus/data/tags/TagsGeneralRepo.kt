@@ -1,6 +1,5 @@
 package com.example.restaurant.menus.data.tags
 
-import android.util.Log
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.local.TagLocalRepo
 import com.example.restaurant.menus.data.tags.remote.TagsRemoteRepo
@@ -12,13 +11,12 @@ class TagsGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemote
 
     var page: Int = 1
 
-    fun loadFromScratch() {
+    fun rest() {
         page = 1
     }
 
     fun getData(): Maybe<List<Tag>> =
         dataLocalRepo.getTags(page)
-            .doOnSubscribe { Log.d("PAGE_NUMBER", page.toString()) }
             .flatMap {
                 if (it.isEmpty())
                     dataRemoteRepo.getTags(page)

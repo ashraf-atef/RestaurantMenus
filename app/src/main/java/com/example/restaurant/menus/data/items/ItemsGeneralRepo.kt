@@ -22,6 +22,8 @@ class ItemsGeneralRepo @Inject constructor(
                                 itemsLocalRepo.insert(remoteDataList).subscribe()
                         }
                         .toMaybe()
+                            //TODO: Remove this line and make columns unique in database
+                        .flatMap { itemsLocalRepo.getItems(tagName)}
                 else
                     Maybe.just(it)
             }

@@ -2,6 +2,7 @@ package com.example.restaurant.menus
 
 import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
 import com.example.restaurant.common.presentationLayer.rx.addTo
+import com.example.restaurant.common.presentationLayer.rx.disposeIfNot
 import com.example.restaurant.common.presentationLayer.view_model.BaseViewModel
 import com.example.restaurant.common.presentationLayer.rx.errors.CompositeErrorConsumer
 import com.example.restaurant.common.presentationLayer.rx.getIoMainTransformer
@@ -9,6 +10,7 @@ import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import javax.inject.Inject
 
@@ -18,6 +20,7 @@ class MenusViewModel @Inject constructor(
 ) : BaseViewModel<MenusState>() {
 
     var lastSelectedTag: Tag? = null
+    var itemsDisposable: Disposable? = null
 
     fun loadFromScratch() {
         if (!isInitBefore) {
@@ -27,7 +30,7 @@ class MenusViewModel @Inject constructor(
     }
 
     fun refresh() {
-        tagsGeneralRepo.loadFromScratch()
+        tagsGeneralRepo.rest()
         loadInitial()
     }
 
@@ -49,7 +52,6 @@ class MenusViewModel @Inject constructor(
 
     private fun loadTags() {
         tagsGeneralRepo.getData()
-            //TODO: Make IO Transformer and use it
             .compose(getIoMainTransformer())
             .subscribe(Consumer {
                 val newDataList = getCurrentState().tags.toMutableList()
@@ -79,8 +81,8 @@ class MenusViewModel @Inject constructor(
             ).addTo(compositeDisposable)
     }
 
-    //TODO: dispose the previous request if found before starting new one
     fun getItems(tag: Tag) {
+        itemsDisposable?.disposeIfNot()
         lastSelectedTag = tag
 
         postState(
@@ -92,7 +94,7 @@ class MenusViewModel @Inject constructor(
             )
         )
 
-        itemsGeneralRepo.getItems(tag.tagName)
+        itemsDisposable= itemsGeneralRepo.getItems(tag.tagName)
             .compose(getIoMainTransformer())
             .subscribe(Consumer {
                 postState(
@@ -113,7 +115,6 @@ class MenusViewModel @Inject constructor(
                 }
             }
             )
-            .addTo(compositeDisposable)
     }
 
     fun retryLoadItems() {
@@ -126,4 +127,8 @@ class MenusViewModel @Inject constructor(
         tagsLoading = TagsLoading.LOAD_FROM_SCRATCH
     )
 
+    override fun onCleared() {
+        super.onCleared()
+        itemsDisposable?.disposeIfNot()
+    }
 }
