@@ -1,14 +1,21 @@
 package com.example.restaurant.menus.data.items
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "item")
+@Entity(
+    tableName = "item",
+    indices = [Index(value = ["itemId", "tagName"], unique = true)]
+)
 data class Item(
-    @PrimaryKey
-    val id: Int,
-    val name: String,
+    @PrimaryKey(autoGenerate = true)
+    val id_: Int,
+    @SerializedName("id")
+    val itemId: Int,
     val tagName: String,
+    val name: String,
     val photoUrl: String,
     val description: String
 )

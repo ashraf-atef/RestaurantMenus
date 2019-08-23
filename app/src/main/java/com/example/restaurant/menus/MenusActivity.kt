@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurant.R
 import com.example.restaurant.common.presentationLayer.BaseActivity
 import com.example.restaurant.common.presentationLayer.EndlessRecyclerViewOnScrollListener
+import com.example.restaurant.item.ItemDetailsActivity
+import com.example.restaurant.menus.data.items.Item
 import com.example.restaurant.menus.data.tags.Tag
 import kotlinx.android.synthetic.main.activity_menus.*
 import kotlinx.android.synthetic.main.partial_items_error.*
@@ -128,6 +130,7 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
         menusViewModel.getItems(tag)
     }
 
-    override fun onItemMenuClick() {
+    override fun onItemMenuClick(item: Item) {
+        ItemDetailsActivity.start(this, item.id_)
     }
 }
