@@ -1,5 +1,6 @@
 package com.example.restaurant.menus.data.tags
 
+import android.util.Log
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.errors.NoMoreOfflineDataThrowable
 import com.example.restaurant.menus.data.tags.local.TagLocalRepo
@@ -9,7 +10,7 @@ import io.reactivex.functions.Consumer
 import java.io.IOException
 import javax.inject.Inject
 
-class DataGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemoteRepo,
+class TagsGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemoteRepo,
                                           private val dataLocalRepo: TagLocalRepo
 ) {
 
@@ -21,6 +22,7 @@ class DataGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemote
 
     fun getData(): Maybe<List<Tag>> =
         dataLocalRepo.getTags(page)
+            .doOnSubscribe { Log.d("PAGE_NUMBER", page.toString()) }
             .flatMap {
                 if (it.isEmpty())
                     dataRemoteRepo.getTags(page)
@@ -36,5 +38,8 @@ class DataGeneralRepo @Inject constructor(private val dataRemoteRepo: TagsRemote
                         .toMaybe()
                 else
                     Maybe.just(it)
-            }.doOnSuccess(Consumer { if (it.isNotEmpty()) page += 1 })
+            }.doOnSuccess {
+                if (it.isNotEmpty()) page += 1
+                Log.d("PAGE_NUMBER +", page.toString())
+            }
 }

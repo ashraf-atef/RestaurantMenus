@@ -3,7 +3,7 @@ package com.example.restaurant.menus
 import androidx.lifecycle.Observer
 import com.example.restaurant.BaseTest
 import com.example.restaurant.menus.data.tags.Tag
-import com.example.restaurant.menus.data.tags.DataGeneralRepo
+import com.example.restaurant.menus.data.tags.TagsGeneralRepo
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.errors.NoMoreOfflineDataThrowable
 import io.reactivex.Maybe
@@ -16,7 +16,7 @@ class DataViewModelTest : BaseTest() {
 
     lateinit var menusViewModel: MenusViewModel
     @Mock
-    lateinit var dataGeneralRepo: DataGeneralRepo
+    lateinit var dataGeneralRepo: TagsGeneralRepo
     @Mock
     lateinit var observer: Observer<MenusState>
     private val tagList: List<Tag> by lazy {
@@ -38,8 +38,8 @@ class DataViewModelTest : BaseTest() {
         verify(observer).onChanged(menusViewModel.getInitialState())
         verify(observer).onChanged(
             menusViewModel.getCurrentState().copy(
-                tagList = tagList,
-                loading = null,
+                tags = tagList,
+                tagsLoading = null,
                 error = null
             )
         )
@@ -51,8 +51,8 @@ class DataViewModelTest : BaseTest() {
         verify(observer).onChanged(menusViewModel.getInitialState())
         verify(observer).onChanged(
             menusViewModel.getCurrentState().copy(
-                tagList = tagList,
-                loading = null,
+                tags = tagList,
+                tagsLoading = null,
                 error = null
             )
         )
@@ -60,15 +60,15 @@ class DataViewModelTest : BaseTest() {
 
     @Test
     fun `load more WHEN load data return a list EXPECT pushing initial state then data state`() {
-        menusViewModel.loadMore()
+        menusViewModel.loadMoreTags()
         verify(observer).onChanged( menusViewModel.getCurrentState().copy(
-            loading = DataLoading.LOAD_MORE,
+            tagsLoading = TagsLoading.LOAD_MORE,
             error = null
         ))
         verify(observer).onChanged(
             menusViewModel.getCurrentState().copy(
-                tagList = tagList,
-                loading = null,
+                tags = tagList,
+                tagsLoading = null,
                 error = null
             )
         )
@@ -78,15 +78,15 @@ class DataViewModelTest : BaseTest() {
     fun `load more WHEN load data return a no more data offline EXPECT pushing initial state then data state`() {
        `when`(dataGeneralRepo.getData()).then { Maybe.error<Any>(NoMoreOfflineDataThrowable()) }
 
-        menusViewModel.loadMore()
+        menusViewModel.loadMoreTags()
         verify(observer).onChanged( menusViewModel.getCurrentState().copy(
-            loading = DataLoading.LOAD_MORE,
+            tagsLoading = TagsLoading.LOAD_MORE,
             error = null
         ))
         verify(observer).onChanged(
             menusViewModel.getCurrentState().copy(
-                loading = null,
-                error = DataErrors.NO_MORE_OFFLINE_DATA
+                tagsLoading = null,
+                error = Errors.NO_MORE_OFFLINE_DATA
             )
         )
     }
@@ -94,15 +94,15 @@ class DataViewModelTest : BaseTest() {
     @Test
     fun `load more WHEN load data return a no data available EXPECT pushing initial state then data state`() {
         `when`(dataGeneralRepo.getData()).then { Maybe.error<Any>(NoDataAvailableThrowable()) }
-        menusViewModel.loadMore()
+        menusViewModel.loadMoreTags()
         verify(observer).onChanged( menusViewModel.getCurrentState().copy(
-            loading = DataLoading.LOAD_MORE,
+            tagsLoading = TagsLoading.LOAD_MORE,
             error = null
         ))
         verify(observer).onChanged(
             menusViewModel.getCurrentState().copy(
-                loading = null,
-                error = DataErrors.NO_DATA_AVAILABLE
+                tagsLoading = null,
+                error = Errors.NO_DATA_AVAILABLE
             )
         )
     }

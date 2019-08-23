@@ -7,5 +7,8 @@ import dagger.Module
 abstract class MenusActivityModule {
 
     @Binds
-    abstract fun provideDataAdapterItemClickListener(menusActivity: MenusActivity): TagsAdapter.ItemClickListener
+    abstract fun provideTagsAdapterItemClickListener(menusActivity: MenusActivity): TagsAdapter.ItemClickListener
+
+    @Binds
+    abstract fun provideItemsAdapterItemClickListener(menusActivity: MenusActivity): ItemsAdapter.ItemClickListener
 }

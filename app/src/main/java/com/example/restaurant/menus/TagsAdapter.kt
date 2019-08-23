@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurant.R
 import com.example.restaurant.common.presentationLayer.BaseDiffUtilCallback
 import com.example.restaurant.menus.data.tags.Tag
-import kotlinx.android.synthetic.main.item_tag.view.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_retry.view.*
+import kotlinx.android.synthetic.main.item_tag.view.*
 import javax.inject.Inject
 
 
-class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener)
-    : RecyclerView.Adapter<TagsAdapter.BaseViewHolder>() {
+class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener) :
+    RecyclerView.Adapter<TagsAdapter.BaseViewHolder>() {
 
     private val DATA_LAYOUT = R.layout.item_tag
     private val LOAD_MORE_LAYOUT = R.layout.item_loader
@@ -48,7 +49,7 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener)
     }
 
     override fun getItemViewType(position: Int): Int = when {
-        loadMore && position == list.size-> LOAD_MORE_LAYOUT
+        loadMore && position == list.size -> LOAD_MORE_LAYOUT
         error && position == list.size -> RETRY_LAYOUT
         else -> DATA_LAYOUT
     }
@@ -90,8 +91,14 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener)
     inner class DataViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         override fun bind() {
-            val tag = list[adapterPosition]
-            itemView.tv_tag_name.text = tag.tagName
+            with(list[adapterPosition]) {
+                with (itemView) {
+                Picasso.get().load(photoURL).placeholder(R.drawable.ic_placeholder).into(iv_tag)
+                itemView.tv_tag_name.text = tagName
+                itemView.setOnClickListener { itemClickListener.onTagClick(list[adapterPosition]) }
+                }
+            }
+
         }
     }
 
@@ -103,14 +110,14 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener)
     inner class RetryViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         override fun bind() {
-            itemView.btn_retry.setOnClickListener{ itemClickListener.onRetryClick() }
+            itemView.btn_retry_items.setOnClickListener { itemClickListener.onRetryTagsClick() }
         }
     }
 
-    inner class DataDiffCallback: BaseDiffUtilCallback<Tag>() {
+    inner class DataDiffCallback : BaseDiffUtilCallback<Tag>() {
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-           oldData[oldItemPosition].tagName == newData[newItemPosition].tagName
+            oldData[oldItemPosition].tagName == newData[newItemPosition].tagName
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldData[oldItemPosition] == newData[newItemPosition]
@@ -118,6 +125,7 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener)
     }
 
     interface ItemClickListener {
-        fun onRetryClick()
+        fun onTagClick(tag: Tag)
+        fun onRetryTagsClick()
     }
 }

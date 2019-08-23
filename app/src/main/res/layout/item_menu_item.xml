@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_15sdp">
+
+    <ImageView
+            android:id="@+id/iv_item_photo"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background"/>
+
+    <TextView
+            android:id="@+id/tv_item_name"
+            app:layout_constraintTop_toTopOf="@id/iv_item_photo"
+            app:layout_constraintBottom_toBottomOf="@id/iv_item_photo"
+            app:layout_constraintStart_toEndOf="@id/iv_item_photo"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_14ssp"
+            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constrainedWidth="true"
+            android:ellipsize="end"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            tools:text="Grilled"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

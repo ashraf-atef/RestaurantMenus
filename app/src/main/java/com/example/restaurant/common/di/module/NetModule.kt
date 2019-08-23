@@ -1,6 +1,7 @@
 package com.example.restaurant.common.di.module
 
 import com.example.restaurant.common.constants.API_URL_KEY
+import com.example.restaurant.menus.data.items.remote.ItemsApi
 import com.example.restaurant.menus.data.tags.remote.TagsApi
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -62,8 +63,15 @@ abstract class NetModule {
         @Provides
         @Reusable
         @JvmStatic
-        fun providesProductsApi(retrofit: Retrofit): TagsApi {
+        fun providesTagsApi(retrofit: Retrofit): TagsApi {
             return retrofit.create(TagsApi::class.java)
+        }
+
+        @Provides
+        @Reusable
+        @JvmStatic
+        fun providesItemsApi(retrofit: Retrofit): ItemsApi {
+            return retrofit.create(ItemsApi::class.java)
         }
     }
 }

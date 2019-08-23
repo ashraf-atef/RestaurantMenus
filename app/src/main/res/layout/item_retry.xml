@@ -6,7 +6,7 @@
         android:layout_height="@dimen/tag_dimen">
 
     <Button
-            android:id="@+id/btn_retry"
+            android:id="@+id/btn_retry_items"
             android:text="@string/title_retry_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
