@@ -62,7 +62,7 @@ class ItemDetailsActivity : BaseActivity() {
         itemDetailsViewModel.liveData.observe(this, Observer {
             render(it)
         })
-        itemDetailsViewModel.loadFromScratch(getItemId())
+        itemDetailsViewModel.init(getItemId())
     }
 
     private fun getItemId(): Int {

@@ -25,10 +25,8 @@ class MenusViewModel @Inject constructor(
     private var itemsDisposable: Disposable? = null
 
     fun loadFromScratch() {
-        if (!isInitBefore) {
+        if (!isInitBefore())
             loadInitial()
-            isInitBefore = true
-        }
     }
 
     fun refresh() {
