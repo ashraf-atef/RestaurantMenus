@@ -19,7 +19,10 @@ class ItemDetailsViewModel @Inject constructor(private val itemLocalRepo: Gettin
             .compose(getIoMainTransformer())
             .subscribe(
                 { postState(getCurrentState().copy(item = it)) },
-                { it.printStackTrace() })
+                {
+                    it.printStackTrace()
+                    throw IllegalArgumentException("Item should be inserted in data base first before querying on it")
+                })
             .addTo(compositeDisposable)
     }
 
