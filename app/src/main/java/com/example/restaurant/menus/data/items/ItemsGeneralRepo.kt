@@ -8,7 +8,8 @@ import javax.inject.Inject
 
 class ItemsGeneralRepo @Inject constructor(
     private val itemsLocalRepo: ItemsLocalRepo,
-    private val itemsRemoteRepo: ItemsRemoteRepo) {
+    private val itemsRemoteRepo: ItemsRemoteRepo
+) {
 
     fun getItems(tagName: String): Maybe<List<Item>> =
         itemsLocalRepo.getItems(tagName)
@@ -22,8 +23,12 @@ class ItemsGeneralRepo @Inject constructor(
                                 itemsLocalRepo.insert(remoteDataList).subscribe()
                         }
                         .toMaybe()
-                            //TODO: Remove this line and make columns unique in database
-                        .flatMap { itemsLocalRepo.getItems(tagName)}
+                        /**
+                         * Fetch the same list from the database again to get a new list with auto incremented ids
+                         * because we can't depend on item id returned from api as primary key because it's not
+                         * unique.
+                         */
+                        .flatMap { itemsLocalRepo.getItems(tagName) }
                 else
                     Maybe.just(it)
             }
