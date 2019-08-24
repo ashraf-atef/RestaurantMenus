@@ -32,15 +32,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                <View android:layout_marginStart="@dimen/_30sdp"
-                      android:layout_marginEnd="@dimen/_30sdp"
-                      android:background="@android:color/darker_gray"
-                      android:layout_width="0dp"
-                      android:layout_height="0.5dp"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintTop_toBottomOf="@id/rv_tags"
-                      app:layout_constraintBottom_toTopOf="@id/rv_items"/>
+                <View
+                        android:id="@+id/separator"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_width="0dp"
+                        android:layout_height="0.5dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rv_tags"
+                        app:layout_constraintBottom_toTopOf="@id/rv_items"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_items"

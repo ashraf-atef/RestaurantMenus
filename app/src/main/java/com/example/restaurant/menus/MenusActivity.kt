@@ -40,16 +40,21 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
     }
 
     private fun render(menusState: MenusState) {
+        renderTags(menusState)
+        renderItems(menusState)
+    }
+
+    private fun renderTags(menusState: MenusState) {
         with(menusState) {
-            if (tagsError == null)
-                tagsAdapter.addData(tags)
-            else {
+            tagsAdapter.addData(tags)
+
+            if (tagsError != null) {
                 Toast.makeText(
                     baseContext,
                     when (tagsError) {
                         Errors.NO_DATA_AVAILABLE -> getString(R.string.msg_no_available_data)
                         Errors.NO_MORE_OFFLINE_DATA -> getString(R.string.msg_no_more_offline_data)
-                        else -> getString(R.string.msg_unknown_error)
+                        Errors.UNKNOWN -> getString(R.string.msg_unknown_error)
                     },
                     Toast.LENGTH_LONG
                 ).show()
@@ -57,16 +62,25 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
             }
 
             when (tagsLoading) {
-                null -> pb_loading.visibility = View.GONE
+                null -> {
+                    pb_loading.visibility = View.GONE
+                    separator.visibility = View.VISIBLE
+                }
                 TagsLoading.LOAD_FROM_SCRATCH -> {
                     pb_loading.visibility = View.VISIBLE
+                    separator.visibility = View.GONE
                     endlessRecyclerViewOnScrollListener.restState()
                 }
                 TagsLoading.LOAD_MORE -> tagsAdapter.addLoadMoreRow()
             }
+        }
+    }
 
+    private fun renderItems(menusState: MenusState) {
+        with(menusState) {
             pb_items_loading.visibility = if (itemsLoading) View.VISIBLE else View.GONE
             tv_items_initial.visibility = if (itemsInitialState) View.VISIBLE else View.GONE
+
             itemsAdapter.addData(items)
             if (itemErrors != null) {
                 if (vs_items_error != null) {
