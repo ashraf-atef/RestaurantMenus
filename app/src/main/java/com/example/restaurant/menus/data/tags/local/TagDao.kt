@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.example.restaurant.menus.data.tags.Tag
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Single
 
 @Dao
 interface TagDao {
@@ -14,5 +15,5 @@ interface TagDao {
     fun insert(posts : List<Tag>): Completable
 
     @Query("SELECT * FROM Tag LIMIT :index, :limit")
-    fun getTags(index: Int, limit: Int) : Maybe<List<Tag>>
+    fun getTags(index: Int, limit: Int) : Single<List<Tag>>
 }

@@ -6,11 +6,11 @@ import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.local.TagLocalRepo
 import com.example.restaurant.menus.data.tags.remote.TagsRemoteRepo
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Single
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.*
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
 import org.mockito.Mockito.*
 
 class TagsGeneralRepoTest: BaseTest() {
@@ -35,7 +35,7 @@ class TagsGeneralRepoTest: BaseTest() {
     @Test
     fun `get tags WHEN local repo return empty list and remote repo return list EXPECT emit page`() {
         val mockedTagsList = listOf<Tag>(mock(Tag::class.java))
-        `when`(tagLocalRepo.getTags(anyInt())).then { Maybe.just(listOf<Tag>()) }
+        `when`(tagLocalRepo.getTags(anyInt())).then { Single.just(listOf<Tag>()) }
         `when`(tagLocalRepo.insert(ArgumentMatchers.anyList())).then {Completable.complete()}
         `when`(tagsRemoteRepo.getTags(anyInt())).then { Single.just(mockedTagsList) }
 
@@ -51,7 +51,7 @@ class TagsGeneralRepoTest: BaseTest() {
 
     @Test
     fun `get tags WHEN local repo return empty list and remote repo return empty list EXPECT emit no data available`() {
-        `when`(tagLocalRepo.getTags(anyInt())).then { Maybe.just(listOf<Tag>()) }
+        `when`(tagLocalRepo.getTags(anyInt())).then { Single.just(listOf<Tag>()) }
         `when`(tagsRemoteRepo.getTags(anyInt())).then { Single.just(listOf<Tag>()) }
 
         val observer = tagsGeneralRepo.getTags().test()
@@ -66,7 +66,7 @@ class TagsGeneralRepoTest: BaseTest() {
 
     @Test
     fun `get tags WHEN local repo return empty list and remote repo return connection throwable EXPECT connection throwable`() {
-        `when`(tagLocalRepo.getTags(anyInt())).then { Maybe.just(listOf<Tag>()) }
+        `when`(tagLocalRepo.getTags(anyInt())).then { Single.just(listOf<Tag>()) }
         `when`(tagsRemoteRepo.getTags(anyInt())).then { Single.error<List<Tag>>(ConnectionThrowable()) }
 
         val observer = tagsGeneralRepo.getTags().test()
@@ -82,7 +82,7 @@ class TagsGeneralRepoTest: BaseTest() {
     @Test
     fun `get tags WHEN local repo return a list EXPECT emit page without calling remote repo`() {
         val mockedTagsList = listOf<Tag>(mock(Tag::class.java))
-        `when`(tagLocalRepo.getTags(anyInt())).then { Maybe.just(mockedTagsList) }
+        `when`(tagLocalRepo.getTags(anyInt())).then { Single.just(mockedTagsList) }
 
         val observer = tagsGeneralRepo.getTags().test()
 

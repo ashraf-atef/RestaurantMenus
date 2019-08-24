@@ -5,6 +5,7 @@ import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.local.TagLocalRepo
 import com.example.restaurant.menus.data.tags.remote.TagsRemoteRepo
 import io.reactivex.Maybe
+import io.reactivex.Single
 import javax.inject.Inject
 
 class TagsGeneralRepo @Inject constructor(
@@ -19,7 +20,7 @@ class TagsGeneralRepo @Inject constructor(
         page = 1
     }
 
-    fun getTags(): Maybe<List<Tag>> =
+    fun getTags(): Single<List<Tag>> =
         tagsLocalRepo.getTags(page)
             .flatMap {
                 if (it.isEmpty())
@@ -31,9 +32,8 @@ class TagsGeneralRepo @Inject constructor(
                             } else
                                 tagsLocalRepo.insert(remoteDataList).subscribe()
                         }
-                        .toMaybe()
                 else
-                    Maybe.just(it)
+                    Single.just(it)
             }.doOnSuccess {
                 if (it.isNotEmpty()) page += 1
             }

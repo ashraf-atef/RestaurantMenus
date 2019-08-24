@@ -7,7 +7,6 @@ import com.example.restaurant.menus.data.items.remote.ItemsRemoteRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -31,7 +30,7 @@ class ItemsGeneralRepoTest : BaseTest() {
     @Test
     fun `get items WHEN local repo return empty list and remote repo return list EXPECT emit list`() {
         val mockedItemsList = listOf<Item>(mock(Item::class.java))
-        `when`(itemsLocalRepo.getItems(anyString())).then { Maybe.just(listOf<Item>()) }
+        `when`(itemsLocalRepo.getItems(anyString())).then { Single.just(listOf<Item>()) }
         `when`(itemsLocalRepo.insert(anyList())).then { Completable.complete() }
         `when`(itemsRemoteRepo.getItems(anyString())).then { Single.just(mockedItemsList) }
 
@@ -45,7 +44,7 @@ class ItemsGeneralRepoTest : BaseTest() {
 
     @Test
     fun `get items WHEN local repo return empty list and remote repo return empty list EXPECT emit no data available`() {
-        `when`(itemsLocalRepo.getItems(anyString())).then { Maybe.just(listOf<Tag>()) }
+        `when`(itemsLocalRepo.getItems(anyString())).then { Single.just(listOf<Tag>()) }
         `when`(itemsRemoteRepo.getItems(anyString())).then { Single.just(listOf<Tag>()) }
 
         val observer = itemsGeneralRepo.getItems(anyString()).test()
@@ -60,7 +59,7 @@ class ItemsGeneralRepoTest : BaseTest() {
 
     @Test
     fun `get items WHEN local repo return empty list and remote repo return connection throwable EXPECT connection throwable`() {
-        `when`(itemsLocalRepo.getItems(anyString())).then { Maybe.just(listOf<Tag>()) }
+        `when`(itemsLocalRepo.getItems(anyString())).then { Single.just(listOf<Tag>()) }
         `when`(itemsRemoteRepo.getItems(anyString())).then { Single.error<List<Tag>>(ConnectionThrowable()) }
 
         val observer = itemsGeneralRepo.getItems(anyString()).test()
@@ -75,7 +74,7 @@ class ItemsGeneralRepoTest : BaseTest() {
     @Test
     fun `get items WHEN local repo return a list EXPECT emit list without calling remote repo`() {
         val mockedItemsList = listOf<Item>(mock(Item::class.java))
-        `when`(itemsLocalRepo.getItems(anyString())).then { Maybe.just(mockedItemsList) }
+        `when`(itemsLocalRepo.getItems(anyString())).then { Single.just(mockedItemsList) }
 
         val observer = itemsGeneralRepo.getItems(anyString()).test()
 

@@ -3,7 +3,7 @@ package com.example.restaurant.menus.data.items
 import com.example.restaurant.menus.data.items.local.ItemsLocalRepo
 import com.example.restaurant.menus.data.items.remote.ItemsRemoteRepo
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
-import io.reactivex.Maybe
+import io.reactivex.Single
 import javax.inject.Inject
 
 class ItemsGeneralRepo @Inject constructor(
@@ -11,7 +11,7 @@ class ItemsGeneralRepo @Inject constructor(
     private val itemsRemoteRepo: ItemsRemoteRepo
 ) {
 
-    fun getItems(tagName: String): Maybe<List<Item>> =
+    fun getItems(tagName: String): Single<List<Item>> =
         itemsLocalRepo.getItems(tagName)
             .flatMap {
                 if (it.isEmpty())
@@ -22,7 +22,6 @@ class ItemsGeneralRepo @Inject constructor(
                             else
                                 itemsLocalRepo.insert(remoteDataList).subscribe()
                         }
-                        .toMaybe()
                         /**
                          * Fetch the same list from the database again to get a new list with auto incremented ids
                          * because we can't depend on item id returned from api as primary key because it's not
@@ -30,6 +29,6 @@ class ItemsGeneralRepo @Inject constructor(
                          */
                         .flatMap { itemsLocalRepo.getItems(tagName) }
                 else
-                    Maybe.just(it)
+                    Single.just(it)
             }
 }

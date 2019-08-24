@@ -8,7 +8,7 @@ import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
 import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
-import io.reactivex.Maybe
+import io.reactivex.Single
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
@@ -106,7 +106,7 @@ class MenusViewModelTest : BaseTest() {
 
     @Test
     fun `load more WHEN load tags return a connection error EXPECT pushing load more then no more offline data state`() {
-        `when`(tagsGeneralRepo.getTags()).then { Maybe.error<Any>(ConnectionThrowable()) }
+        `when`(tagsGeneralRepo.getTags()).then { Single.error<Any>(ConnectionThrowable()) }
 
         menusViewModel.loadMoreTags()
         verify(observer).onChanged(
@@ -124,7 +124,7 @@ class MenusViewModelTest : BaseTest() {
 
     @Test
     fun `load more WHEN load data return no data available EXPECT pushing load more then no data available state`() {
-        `when`(tagsGeneralRepo.getTags()).then { Maybe.error<Any>(NoDataAvailableThrowable()) }
+        `when`(tagsGeneralRepo.getTags()).then { Single.error<Any>(NoDataAvailableThrowable()) }
         menusViewModel.loadMoreTags()
         verify(observer).onChanged(
             MenusState(
@@ -159,7 +159,7 @@ class MenusViewModelTest : BaseTest() {
 
     @Test
     fun `get items WHEN items repo return a connection error EXPECT pushing load then no more offline data state`() {
-        `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString())).then { Maybe.error<Any>(ConnectionThrowable()) }
+        `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString())).then { Single.error<Any>(ConnectionThrowable()) }
 
         menusViewModel.getItems(getMockedTag())
 
@@ -178,7 +178,7 @@ class MenusViewModelTest : BaseTest() {
     @Test
     fun `get items WHEN items repo return no data available EXPECT pushing load then no data available state`() {
         `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString()))
-            .then { Maybe.error<Any>(NoDataAvailableThrowable()) }
+            .then { Single.error<Any>(NoDataAvailableThrowable()) }
 
         menusViewModel.getItems(getMockedTag())
 
@@ -195,11 +195,11 @@ class MenusViewModelTest : BaseTest() {
     }
 
     private fun mockTagsReposReturnValidData() {
-        `when`(tagsGeneralRepo.getTags()).then { Maybe.just(tagList) }
+        `when`(tagsGeneralRepo.getTags()).then { Single.just(tagList) }
     }
 
     private fun mockItemsReposReturnValidData() {
-        `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString())).then { Maybe.just(tagList) }
+        `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString())).then { Single.just(tagList) }
     }
 
     private fun getMockedTag(): Tag {
