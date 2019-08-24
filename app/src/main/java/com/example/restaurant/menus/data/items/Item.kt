@@ -1,5 +1,6 @@
 package com.example.restaurant.menus.data.items
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -11,7 +12,9 @@ import com.google.gson.annotations.SerializedName
 )
 data class Item(
     @PrimaryKey(autoGenerate = true)
-    val id_: Int,
+    @ColumnInfo(name = "id")
+    @Transient
+    val id: Int,
     @SerializedName("id")
     val itemId: Int,
     val tagName: String,

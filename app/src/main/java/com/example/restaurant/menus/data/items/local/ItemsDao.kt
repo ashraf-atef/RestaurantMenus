@@ -17,6 +17,6 @@ interface ItemsDao {
     @Query("Select * from item where tagName = :tagName")
     fun getItems(tagName: String): Single<List<Item>>
 
-    @Query("Select * from item where id_ = :id")
+    @Query("Select * from item where id = :id")
     fun getItem(id: Int): Single<Item>
 }

@@ -1,7 +1,6 @@
 package com.example.restaurant.menus
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -144,6 +143,6 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
     }
 
     override fun onItemMenuClick(item: Item, ivItemPhoto: ImageView) {
-        ItemDetailsActivity.start(this, item.id_, ivItemPhoto)
+        ItemDetailsActivity.start(this, item.id, ivItemPhoto)
     }
 }
