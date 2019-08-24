@@ -87,7 +87,7 @@ class TagsGeneralRepoTest: BaseTest() {
         val observer = tagsGeneralRepo.getTags().test()
 
         verify(tagLocalRepo).getTags(anyInt())
-        verify(tagLocalRepo, times( 0)).insert(ArgumentMatchers.anyList())
+        verify(tagLocalRepo, never()).insert(ArgumentMatchers.anyList())
         verify(tagsRemoteRepo, never()).getTags(anyInt())
         observer.assertValueCount(1)
         observer.assertValueAt(0, mockedTagsList)
