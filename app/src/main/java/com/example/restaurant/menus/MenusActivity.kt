@@ -116,7 +116,6 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
         endlessRecyclerViewOnScrollListener = object : EndlessRecyclerViewOnScrollListener() {
 
             override fun onLoadMore() {
-                Log.d("PAGE_NUMBER", "LOAD")
                 menusViewModel.loadMoreTags()
             }
         }
