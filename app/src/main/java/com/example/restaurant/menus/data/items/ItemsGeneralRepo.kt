@@ -2,7 +2,7 @@ package com.example.restaurant.menus.data.items
 
 import com.example.restaurant.menus.data.items.local.ItemsLocalRepo
 import com.example.restaurant.menus.data.items.remote.ItemsRemoteRepo
-import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
 import io.reactivex.Single
 import javax.inject.Inject
 

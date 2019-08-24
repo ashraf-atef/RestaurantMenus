@@ -1,10 +1,9 @@
 package com.example.restaurant.menus.data.tags
 
 import androidx.annotation.VisibleForTesting
-import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.local.TagLocalRepo
 import com.example.restaurant.menus.data.tags.remote.TagsRemoteRepo
-import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
 

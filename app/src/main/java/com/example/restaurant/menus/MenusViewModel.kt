@@ -10,7 +10,7 @@ import com.example.restaurant.common.presentationLayer.rx.getIoMainTransformer
 import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
-import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import javax.inject.Inject

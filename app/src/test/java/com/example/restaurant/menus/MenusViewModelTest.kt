@@ -7,7 +7,7 @@ import com.example.restaurant.menus.data.items.Item
 import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
-import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
 import io.reactivex.Single
 import org.junit.Test
 import org.mockito.ArgumentMatchers

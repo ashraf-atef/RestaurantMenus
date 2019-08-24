@@ -5,7 +5,7 @@ import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
 import com.example.restaurant.menus.data.items.local.ItemsLocalRepo
 import com.example.restaurant.menus.data.items.remote.ItemsRemoteRepo
 import com.example.restaurant.menus.data.tags.Tag
-import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
 import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Assert.assertEquals

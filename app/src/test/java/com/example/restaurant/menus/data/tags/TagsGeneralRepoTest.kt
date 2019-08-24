@@ -2,7 +2,7 @@ package com.example.restaurant.menus.data.tags
 
 import com.example.restaurant.BaseTest
 import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
-import com.example.restaurant.menus.data.tags.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
 import com.example.restaurant.menus.data.tags.local.TagLocalRepo
 import com.example.restaurant.menus.data.tags.remote.TagsRemoteRepo
 import io.reactivex.Completable
