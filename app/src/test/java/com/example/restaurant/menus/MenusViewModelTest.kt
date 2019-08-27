@@ -2,12 +2,11 @@ package com.example.restaurant.menus
 
 import androidx.lifecycle.Observer
 import com.example.restaurant.BaseTest
-import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
 import com.example.restaurant.menus.data.items.Item
 import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
-import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoMoreOfflineDataThrowable
 import io.reactivex.Single
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -40,7 +39,6 @@ class MenusViewModelTest : BaseTest() {
     @Test
     fun `load from scratch WHEN load tags return a list and selected tag is null EXPECT pushing initial state then tags state`() {
         mockTagsReposReturnValidData()
-
         menusViewModel.loadFromScratch()
 
         verify(observer).onChanged(menusViewModel.getInitialState())
@@ -105,10 +103,11 @@ class MenusViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `load more WHEN load tags return a connection error EXPECT pushing load more then no more offline data state`() {
-        `when`(tagsGeneralRepo.getTags()).then { Single.error<Any>(ConnectionThrowable()) }
+    fun `load more WHEN load tags return a no more offline throwable EXPECT pushing load more then no more offline data state`() {
+        `when`(tagsGeneralRepo.getTags()).then { Single.error<Any>(NoMoreOfflineDataThrowable()) }
 
         menusViewModel.loadMoreTags()
+
         verify(observer).onChanged(
             MenusState(
                 tagsLoading = TagsLoading.LOAD_MORE
@@ -118,23 +117,6 @@ class MenusViewModelTest : BaseTest() {
             MenusState(
                 tagsLoading = null,
                 tagsError = Errors.NO_MORE_OFFLINE_DATA
-            )
-        )
-    }
-
-    @Test
-    fun `load more WHEN load data return no data available EXPECT pushing load more then no data available state`() {
-        `when`(tagsGeneralRepo.getTags()).then { Single.error<Any>(NoDataAvailableThrowable()) }
-        menusViewModel.loadMoreTags()
-        verify(observer).onChanged(
-            MenusState(
-                tagsLoading = TagsLoading.LOAD_MORE
-            )
-        )
-        verify(observer).onChanged(
-            MenusState(
-                tagsLoading = null,
-                tagsError = Errors.NO_DATA_AVAILABLE
             )
         )
     }
@@ -158,9 +140,9 @@ class MenusViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `get items WHEN items repo return a connection error EXPECT pushing load then no more offline data state`() {
-        `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString())).then { Single.error<Any>(ConnectionThrowable()) }
-
+    fun `get items WHEN items repo return a no more offline throwable EXPECT pushing load then no more offline data state`() {
+        `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString()))
+            .then { Single.error<Any>(NoMoreOfflineDataThrowable()) }
         menusViewModel.getItems(getMockedTag())
 
         verify(observer).onChanged(
@@ -171,25 +153,6 @@ class MenusViewModelTest : BaseTest() {
         verify(observer).onChanged(
             menusViewModel.getInitialState().copy(
                 itemErrors = Errors.NO_MORE_OFFLINE_DATA
-            )
-        )
-    }
-
-    @Test
-    fun `get items WHEN items repo return no data available EXPECT pushing load then no data available state`() {
-        `when`(itemsGeneralRepo.getItems(ArgumentMatchers.anyString()))
-            .then { Single.error<Any>(NoDataAvailableThrowable()) }
-
-        menusViewModel.getItems(getMockedTag())
-
-        verify(observer).onChanged(
-           menusViewModel.getInitialState().copy(
-                itemsLoading = true
-            )
-        )
-        verify(observer).onChanged(
-            menusViewModel.getInitialState().copy(
-                itemErrors = Errors.NO_DATA_AVAILABLE
             )
         )
     }

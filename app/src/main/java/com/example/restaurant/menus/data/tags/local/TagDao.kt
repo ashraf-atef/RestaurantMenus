@@ -14,6 +14,6 @@ interface TagDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(posts : List<Tag>): Completable
 
-    @Query("SELECT * FROM Tag LIMIT :index, :limit")
-    fun getTags(index: Int, limit: Int) : Single<List<Tag>>
+    @Query("SELECT * FROM Tag where pageNumber = :page")
+    fun getTags(page: Int) : Single<List<Tag>>
 }

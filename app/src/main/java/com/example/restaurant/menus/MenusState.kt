@@ -15,7 +15,7 @@ data class MenusState(
 )
 
 enum class Errors {
-    NO_DATA_AVAILABLE, NO_MORE_OFFLINE_DATA, UNKNOWN
+     NO_MORE_OFFLINE_DATA, UNKNOWN
 }
 
 enum class TagsLoading {

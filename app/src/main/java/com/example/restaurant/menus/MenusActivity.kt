@@ -45,13 +45,12 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
 
     private fun renderTags(menusState: MenusState) {
         with(menusState) {
-            tagsAdapter.addData(tags)
+            tagsAdapter.addTags(tags)
 
             if (tagsError != null) {
                 Toast.makeText(
                     baseContext,
                     when (tagsError) {
-                        Errors.NO_DATA_AVAILABLE -> getString(R.string.msg_no_available_data)
                         Errors.NO_MORE_OFFLINE_DATA -> getString(R.string.msg_no_more_offline_data)
                         Errors.UNKNOWN -> getString(R.string.msg_unknown_error)
                     },
@@ -89,7 +88,6 @@ class MenusActivity : BaseActivity(), TagsAdapter.ItemClickListener, ItemsAdapte
                     cl_items_error?.visibility = View.VISIBLE
 
                 tv_items_error.text = when (itemErrors) {
-                    Errors.NO_DATA_AVAILABLE -> getString(R.string.msg_no_available_data)
                     Errors.NO_MORE_OFFLINE_DATA -> getString(R.string.msg_no_more_offline_data)
                     else -> getString(R.string.msg_unknown_error)
                 }

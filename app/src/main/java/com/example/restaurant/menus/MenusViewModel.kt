@@ -1,7 +1,6 @@
 package com.example.restaurant.menus
 
 import androidx.annotation.VisibleForTesting
-import com.example.restaurant.common.dataLayer.remote.error.ConnectionThrowable
 import com.example.restaurant.common.presentationLayer.rx.addTo
 import com.example.restaurant.common.presentationLayer.rx.disposeIfNot
 import com.example.restaurant.common.presentationLayer.view_model.BaseViewModel
@@ -10,7 +9,7 @@ import com.example.restaurant.common.presentationLayer.rx.getIoMainTransformer
 import com.example.restaurant.menus.data.items.ItemsGeneralRepo
 import com.example.restaurant.menus.data.tags.Tag
 import com.example.restaurant.menus.data.tags.TagsGeneralRepo
-import com.example.restaurant.menus.data.errors.NoDataAvailableThrowable
+import com.example.restaurant.menus.data.errors.NoMoreOfflineDataThrowable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import javax.inject.Inject
@@ -70,8 +69,7 @@ class MenusViewModel @Inject constructor(
                         getCurrentState().copy(
                             tagsLoading = null,
                             tagsError = when (t) {
-                                is ConnectionThrowable -> Errors.NO_MORE_OFFLINE_DATA
-                                is NoDataAvailableThrowable -> Errors.NO_DATA_AVAILABLE
+                                is NoMoreOfflineDataThrowable -> Errors.NO_MORE_OFFLINE_DATA
                                 else -> Errors.UNKNOWN
                             }
                         )
@@ -106,8 +104,7 @@ class MenusViewModel @Inject constructor(
                         getCurrentState().copy(
                             itemsLoading = false,
                             itemErrors = when (t) {
-                                is ConnectionThrowable -> Errors.NO_MORE_OFFLINE_DATA
-                                is NoDataAvailableThrowable -> Errors.NO_DATA_AVAILABLE
+                                is NoMoreOfflineDataThrowable -> Errors.NO_MORE_OFFLINE_DATA
                                 else -> Errors.UNKNOWN
                             }
                         )

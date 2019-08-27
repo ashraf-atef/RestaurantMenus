@@ -56,7 +56,6 @@ class ItemDetailsActivity : BaseActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
-    //TODO: Make this function abstract in parent
     private fun initViewModel() {
         itemDetailsViewModel = ViewModelProvider(this, viewModelFactory).get(ItemDetailsViewModel::class.java)
         itemDetailsViewModel.liveData.observe(this, Observer {

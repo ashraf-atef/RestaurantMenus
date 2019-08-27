@@ -15,7 +15,7 @@ class TagLocalRepoTest {
     lateinit var tagsLocalRepo: TagLocalRepo
     lateinit var localDatabase: LocalDatabase
     private val tag: Tag by lazy {
-        Tag("Dessert", "")
+        Tag("Dessert", "", 1)
     }
 
     @Before

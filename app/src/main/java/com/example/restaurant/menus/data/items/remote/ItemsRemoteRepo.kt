@@ -1,6 +1,5 @@
 package com.example.restaurant.menus.data.items.remote
 
-import com.example.restaurant.common.dataLayer.remote.error.ErrorFunction
 import com.example.restaurant.menus.data.items.Item
 import io.reactivex.Single
 import javax.inject.Inject
@@ -12,5 +11,4 @@ class ItemsRemoteRepo @Inject constructor(private val itemsApi: ItemsApi) {
             .map {
                 it.items.map { item -> item.copy(tagName = tagName)}
             }
-            .onErrorReturn(ErrorFunction())
 }

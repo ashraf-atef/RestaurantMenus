@@ -18,15 +18,16 @@ import javax.inject.Inject
 class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<TagsAdapter.BaseViewHolder>() {
 
-    private val DATA_LAYOUT = R.layout.item_tag
-    private val LOAD_MORE_LAYOUT = R.layout.item_loader
-    private val RETRY_LAYOUT = R.layout.item_retry
+    companion object {
+        private const val DATA_LAYOUT = R.layout.item_tag
+        private const val LOAD_MORE_LAYOUT = R.layout.item_loader
+        private const val RETRY_LAYOUT = R.layout.item_retry
+    }
 
     private val list: MutableList<Tag> = mutableListOf()
     private val diffUtilCallback: DataDiffCallback by lazy {
         DataDiffCallback()
     }
-
     var loadMore: Boolean = false
     var error: Boolean = false
 
@@ -41,7 +42,6 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener) 
             RETRY_LAYOUT -> RetryViewHolder(view)
             else -> throw IllegalArgumentException("Unknown Layout")
         }
-
     }
 
     override fun onBindViewHolder(@NonNull holder: BaseViewHolder, position: Int) {
@@ -54,14 +54,13 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener) 
         else -> DATA_LAYOUT
     }
 
-    fun addData(newTagList: List<Tag>) {
+    fun addTags(newTagList: List<Tag>) {
         removeLoadAndRetryRows()
         diffUtilCallback.setLists(list, newTagList)
         val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
         this.list.clear()
         this.list.addAll(newTagList)
-        notifyDataSetChanged()
     }
 
     private fun removeLoadAndRetryRows() {
@@ -98,7 +97,6 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener) 
                 itemView.setOnClickListener { itemClickListener.onTagClick(list[adapterPosition]) }
                 }
             }
-
         }
     }
 
@@ -121,7 +119,6 @@ class TagsAdapter @Inject constructor(val itemClickListener: ItemClickListener) 
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldData[oldItemPosition] == newData[newItemPosition]
-
     }
 
     interface ItemClickListener {

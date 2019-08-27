@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.item_menu_item.view.*
 import kotlinx.android.synthetic.main.item_tag.view.*
 import javax.inject.Inject
 
-//TODO: Make Base adapter [Low Priority]
 class ItemsAdapter @Inject constructor(val itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
 
