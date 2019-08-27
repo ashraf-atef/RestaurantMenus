@@ -4,35 +4,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class EndlessRecyclerViewOnScrollListener : RecyclerView.OnScrollListener() {
-    /**
-     * The total number of items in the data after the last load
-     */
-    private var previousTotal = 0
-    /**
-     * True if we are still waiting for the last set of data to load.
-     */
-    private var isLoading = true
 
-    private val loadMoreRunnable = Runnable { this.onLoadMore() }
+    private var total = 0
+    private var isLoading = true
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        if (dx > 0) { // scrolling end (right / left depend on locale)
+        // Scroll horizontal to the end
+        if (dx > 0) {
             val visibleItemCount = recyclerView.childCount
             val totalItemCount = recyclerView.layoutManager!!.itemCount
             val firstVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 
             if (isLoading) {
-                // the + 1 is for the error / progress layouts
-                if (totalItemCount > previousTotal + 1) {
+                // Increment total with one to handle adding loading and error items
+                if (totalItemCount > total + 1) {
                     isLoading = false
-                    previousTotal = totalItemCount
+                    total = totalItemCount
                 }
             }
+
             val visibleThreshold = 5
+            // Check if the end has been reached before 5 items (visibleThreshold)
             if (!isLoading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
-                // End has been reached
-                recyclerView.post(loadMoreRunnable)
+                onLoadMore()
                 isLoading = true
             }
         }
@@ -41,7 +36,7 @@ abstract class EndlessRecyclerViewOnScrollListener : RecyclerView.OnScrollListen
     abstract fun onLoadMore()
 
     fun restState() {
-        previousTotal = 0
+        total = 0
         isLoading = true
     }
 }
